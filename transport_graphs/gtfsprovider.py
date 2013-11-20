@@ -60,40 +60,50 @@ class GtfsProviderCsv(GtfsProvider):
     """ Implementation of GtfsProvier that reads the data
         from Csvs"""
 
+    """ Standard names for GTFS files """
+    AGENCY_FILE = "agency.txt"
+    CALENDAR_DATES_FILE = "calendar_dates.txt"
+    CALENDAR_FILE = "calendar.txt"
+    SHAPES_FILE = "shapes.txt"
+    STOPS_FILE = "stops.txt"
+    ROUTES_FILE = "routes.txt"
+    STOP_TIMES_FILE = "stop_times.txt"
+    TRIPS_FILE = "trips.txt"
+
     def __init__(self, directory):
         self.directory = directory
 
     def load_agency(self):
         """ Loads agency file to a list. """
-        return self.load_gtfs_file(self.directory, gtfs.AGENCY_FILE)
+        return self.load_gtfs_file(self.directory, self.AGENCY_FILE)
 
     def load_calendar_dates(self):
         """ Loads calendar_dates file to a list. """
-        return self.load_gtfs_file(self.directory, gtfs.CALENDAR_DATES_FILE)
+        return self.load_gtfs_file(self.directory, self.CALENDAR_DATES_FILE)
 
     def load_calendar(self):
         """ Loads calendar file to a list. """
-        return self.load_gtfs_file(self.directory, gtfs.CALENDAR_FILE)
+        return self.load_gtfs_file(self.directory, self.CALENDAR_FILE)
 
     def load_shapes(self):
         """ Loads shapes file to a list. """
-        return self.load_gtfs_file(self.directory, gtfs.SHAPES_FILE)
+        return self.load_gtfs_file(self.directory, self.SHAPES_FILE)
 
     def load_stops(self):
         """ Loads stops file to a list. """
-        return self.load_gtfs_file(self.directory, gtfs.STOPS_FILE)
+        return self.load_gtfs_file(self.directory, self.STOPS_FILE)
 
     def load_routes(self):
         """ Loads routes file to a list. """
-        return self.load_gtfs_file(self.directory, gtfs.ROUTES_FILE)
+        return self.load_gtfs_file(self.directory, self.ROUTES_FILE)
 
     def load_stop_times(self):
         """ Loads stop_times file to a list. """
-        return self.load_gtfs_file(self.directory, gtfs.STOP_TIMES_FILE)
+        return self.load_gtfs_file(self.directory, self.STOP_TIMES_FILE)
 
     def load_trips(self):
         """ Loads trips file to a list. """
-        return self.load_gtfs_file(self.directory, gtfs.TRIPS_FILE)
+        return self.load_gtfs_file(self.directory, self.TRIPS_FILE)
 
     def load_gtfs_file(self, directory, filename):
         """ Loads a GTFS file into a list """

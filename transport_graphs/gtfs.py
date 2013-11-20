@@ -1,18 +1,9 @@
 """
 gtfs.py:
 
-Utility classes for loading General Transit Feed Specification (GTFS) data.
+Data model for General Transit Feed Specification (GTFS) data.
 
 """
-
-AGENCY_FILE = "agency.txt"
-CALENDAR_DATES_FILE = "calendar_dates.txt"
-CALENDAR_FILE = "calendar.txt"
-SHAPES_FILE = "shapes.txt"
-STOPS_FILE = "stops.txt"
-ROUTES_FILE = "routes.txt"
-STOP_TIMES_FILE = "stop_times.txt"
-TRIPS_FILE = "trips.txt"
 
 AGENCY_KEYS = [
     u"agency_name",
