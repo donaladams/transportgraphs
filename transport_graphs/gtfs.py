@@ -4,9 +4,6 @@ gtfs.py:
 Utility classes for loading General Transit Feed Specification (GTFS) data.
 
 """
-import os
-import utils.ucsv
-from utils.decorators import CheckPathIsValid
 
 AGENCY_FILE = "agency.txt"
 CALENDAR_DATES_FILE = "calendar_dates.txt"
@@ -84,62 +81,6 @@ TRIPS_KEYS = [
     u"direction_id"
     ]
 
-@CheckPathIsValid
-def read_csv(path):
-    """ Reads a csv into a list. Throws ValueException if
-        path is incorrect. """
-    content = []
-    with open(path, 'rb') as csvfile:
-        dictreader = utils.ucsv.UnicodeDictReader(csvfile)
-        for row in dictreader:
-            content.append(row)
-
-    return content
-
-def load_gtfs_file(directory, filename):
-    """ Loads a GTFS file into a list """
-    try:
-        filepath = os.path.join(directory, filename)
-        return read_csv(filepath)
-    except ValueError as value_error:
-        print value_error
-
-    except Exception as exeption:
-        print exeption
-
-    return None
-
-def load_agency(directory):
-    """ Loads agency file to a list. """
-    return load_gtfs_file(directory, AGENCY_FILE)
-
-def load_calendar_dates(directory):
-    """ Loads calendar_dates file to a list. """
-    return load_gtfs_file(directory, CALENDAR_DATES_FILE)
-
-def load_calendar(directory):
-    """ Loads calendar file to a list. """
-    return load_gtfs_file(directory, CALENDAR_FILE)
-
-def load_shapes(directory):
-    """ Loads shapes file to a list. """
-    return load_gtfs_file(directory, SHAPES_FILE)
-
-def load_stops(directory):
-    """ Loads stops file to a list. """
-    return load_gtfs_file(directory, STOPS_FILE)
-
-def load_routes(directory):
-    """ Loads routes file to a list. """
-    return load_gtfs_file(directory, ROUTES_FILE)
-
-def load_stop_times(directory):
-    """ Loads stop_times file to a list. """
-    return load_gtfs_file(directory, STOP_TIMES_FILE)
-
-def load_trips(directory):
-    """ Loads trips file to a list. """
-    return load_gtfs_file(directory, TRIPS_FILE)
 
 
 
