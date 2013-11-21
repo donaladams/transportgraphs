@@ -75,7 +75,8 @@ TRIPS_KEYS = [
     ]
 
 class GtfsObject(object):
-    """ Base class for Gtfs Objects """
+    """ Base class for Gtfs Objects. Contains
+        common functionality between the objects. """
 
     def __init__(self, required_keys, data_dict):
         self.required_keys = required_keys
@@ -94,8 +95,16 @@ class GtfsObject(object):
             Should be defined in derived classes """
         pass
 
+    def __eq__(self, other):
+        """ Basing equality on id """
+        return self.unique_id() == other.unique_id()
+
+    def __str__(self):
+        return unicode(self).encode(UTF8)
+
+
 class Route(GtfsObject):
-    """ Corresponds to a single row in the route data set """
+    """ Corresponds to a single row in the route dataset """
     def __init__(self, data_dict):
         super(Route, self).__init__(ROUTES_KEYS, data_dict)
 
@@ -112,11 +121,9 @@ class Route(GtfsObject):
         return self.get(u"route_type")
 
     def unique_id(self):
-        """ Returns a unique key for this object """
+        """ Returns a unique key for this object.
+            This is simply the route_id for the object """
         return self.get_route_id()
-
-    def __str__(self):
-        return unicode(self).encode(UTF8)
 
     def __unicode__(self):
         return u"Route: {0}, {1}, {2}, {3}".format(
@@ -126,3 +133,42 @@ class Route(GtfsObject):
             self.get_route_type()
             )
 
+
+class TripElement(GtfsObject):
+    """ Corresponds to a single row in the trips dataset """
+
+    def __init__(self, data_dict):
+        super(TripElement, self).__init__(TRIPS_KEYS, data_dict)
+
+    def get_route_id(self):
+        return self.get(u"route_id")
+
+    def get_service_id(self):
+        return self.get(u"service_id")
+
+    def get_trip_id(self):
+        return self.get(u"trip_id")
+
+    def get_shape_id(self):
+        return self.get(u"shape_id")
+
+    def get_trip_headsign(self):
+        return self.get(u"trip_headsign")
+
+    def get_direction_id(self):
+        return self.get(u"direction_id")
+
+    def unique_id(self):
+        """ Returns a unique key for this object.
+            This is a tuple of (route_id, service_id, trip_id) """
+        return (self.get_route_id(), self.get_service_id(), self.get_trip_id())
+
+    def __unicode__(self):
+        return u"TripElement: {0}, {1}, {2}, {3}, {5}, {6}".format(
+            self.get_route_id(),
+            self.get_service_id(),
+            self.get_trip_id(),
+            self.get_shape_id(),
+            self.get_trip_headsign(),
+            self.get_direction_id()
+            )

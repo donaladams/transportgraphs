@@ -150,13 +150,42 @@ class TestGtfsRoute(object):
         first_route = routes[0]
         route = gtfs.Route(first_route)
 
-        print first_route
-
         assert route.is_valid()
         assert route.unique_id() == first_route[u"route_id"]
         assert route.get_route_id() == route.unique_id()
         assert route.get_route_short_name() == first_route[u"route_short_name"]
         assert route.get_route_long_name() == first_route[u"route_long_name"]
         assert route.get_route_type() == first_route[u"route_type"]
+        assert route == route
+
+class TestGtfsTripElement(object):
+    """ Tests basic functionality of gtfs.TripElement objects """
+
+    def test_construction(self):
+        provider = GtfsProviderSingleRowMock()
+        trip_elements = provider.load_trips()
+        assert len(trip_elements) == 1
+
+        first_element = trip_elements[0]
+        trip_element = gtfs.TripElement(first_element)
+
+        assert trip_element.is_valid()
+
+        expected_unique_id = (
+                first_element[u"route_id"],
+                first_element[u"service_id"],
+                first_element[u"trip_id"]
+            )
+
+        assert trip_element.unique_id() == expected_unique_id
+        assert trip_element.get_route_id() == first_element[u"route_id"]
+        assert trip_element.get_service_id() == first_element[u"service_id"]
+        assert trip_element.get_trip_id() == first_element[u"trip_id"]
+        assert trip_element.get_shape_id() == first_element[u"shape_id"]
+        assert trip_element.get_trip_headsign() == first_element[u"trip_headsign"]
+        assert trip_element.get_direction_id() == first_element[u"direction_id"]
+
+
+
 
 
