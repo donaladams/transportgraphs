@@ -263,4 +263,31 @@ class StopTime(GtfsObject):
             )
 
 
+class Agency(GtfsObject):
+    """ Represents an element in the agency dataset """
+    def __init__(self, data_dict):
+        super(Agency, self).__init__(AGENCY_KEYS, data_dict)
+        raise NotImplementedError()
+
+
+class CalenderElement(GtfsObject):
+    """ Represents an element in the calendar dataset """
+    def __init__(self, data_dict):
+        super(Agency, self).__init__(CALENDAR_KEYS, data_dict)
+        raise NotImplementedError()
+
+
+class CalenderDatesElement(GtfsObject):
+    """ Represents an element in the calendar dates dataset """
+    def __init__(self, data_dict):
+        super(CalenderDatesElement, self).__init__(CALENDAR_DATES_KEYS, data_dict)
+        raise NotImplementedError()
+
+
+class Shape(GtfsObject):
+    """ Represents an element in the shapes dataset """
+    def __init__(self, data_dict):
+        super(Shape, self).__init__(SHAPES_KEYS, data_dict)
+        raise NotImplementedError()
+
 
