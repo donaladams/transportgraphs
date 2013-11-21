@@ -1,8 +1,8 @@
 import os
 from nose.tools import raises
-import gtfs
-from gtfsprovider import GtfsProviderCsv
-from gtfsprovider import GtfsProviderSingleRowMock
+import gtfs.models as models
+from gtfs.gtfsprovider import GtfsProviderCsv
+from gtfs.gtfsprovider import GtfsProviderSingleRowMock
 from utils.decorators import CheckPathIsValid
 
 
@@ -20,7 +20,7 @@ class TestCsvGtfsProvider(object):
         assert data
         first = data[0]
         # data dict contains the correct keys
-        assert set(first.keys()) == set(gtfs.AGENCY_KEYS)
+        assert set(first.keys()) == set(models.AGENCY_KEYS)
 
     def test_load_calendar_dates(self):
         """ Tests the loading of the calendar_dates.txt file
@@ -32,7 +32,7 @@ class TestCsvGtfsProvider(object):
 
         first = data[0]
         # data dict contains the correct keys
-        assert set(first.keys()) == set(gtfs.CALENDAR_DATES_KEYS)
+        assert set(first.keys()) == set(models.CALENDAR_DATES_KEYS)
 
     def test_load_calendar(self):
         """ Tests the loading of the calendar.txt file
@@ -44,7 +44,7 @@ class TestCsvGtfsProvider(object):
 
         first = data[0]
         # data dict contains the correct keys
-        assert set(first.keys()) == set(gtfs.CALENDAR_KEYS)
+        assert set(first.keys()) == set(models.CALENDAR_KEYS)
 
     def test_load_shapes(self):
         """ Tests the loading of the shapes.txt file
@@ -56,7 +56,7 @@ class TestCsvGtfsProvider(object):
 
         first = data[0]
         # data dict contains the correct keys
-        assert set(first.keys()) == set(gtfs.SHAPES_KEYS)
+        assert set(first.keys()) == set(models.SHAPES_KEYS)
 
     def test_load_stops(self):
         """ Tests the loading of the stops.txt file
@@ -68,7 +68,7 @@ class TestCsvGtfsProvider(object):
 
         first = data[0]
         # data dict contains the correct keys
-        assert set(first.keys()) == set(gtfs.STOPS_KEYS)
+        assert set(first.keys()) == set(models.STOPS_KEYS)
 
     def test_load_routes(self):
         """ Tests the loading of the routes.txt file
@@ -80,7 +80,7 @@ class TestCsvGtfsProvider(object):
 
         first = data[0]
         # data dict contains the correct keys
-        assert set(first.keys()) == set(gtfs.ROUTES_KEYS)
+        assert set(first.keys()) == set(models.ROUTES_KEYS)
 
     def test_load_stop_times(self):
         """ Tests the loading of the stop_times.txt file
@@ -92,7 +92,7 @@ class TestCsvGtfsProvider(object):
 
         first = data[0]
         # data dict contains the correct keys
-        assert set(first.keys()) == set(gtfs.STOP_TIMES_KEYS)
+        assert set(first.keys()) == set(models.STOP_TIMES_KEYS)
 
     def test_load_trips(self):
         """ Tests the loading of the trips.txt file
@@ -104,7 +104,7 @@ class TestCsvGtfsProvider(object):
 
         first = data[0]
         # data dict contains the correct keys
-        assert set(first.keys()) == set(gtfs.TRIPS_KEYS)
+        assert set(first.keys()) == set(models.TRIPS_KEYS)
 
 
 def write_to_file(filename, data):
@@ -114,7 +114,7 @@ def write_to_file(filename, data):
 
 
 class TestGtfsRoute(object):
-    """ Tests basic functionality of gtfs.Route objects """
+    """ Tests basic functionality of models.Route objects """
 
     def test_construction(self):
         provider = GtfsProviderSingleRowMock()
@@ -122,7 +122,7 @@ class TestGtfsRoute(object):
         assert len(routes) == 1
 
         first_route = routes[0]
-        route = gtfs.Route(first_route)
+        route = models.Route(first_route)
 
         assert route.is_valid()
         assert route.unique_id() == first_route[u"route_id"]
@@ -133,7 +133,7 @@ class TestGtfsRoute(object):
         assert route == route
 
 class TestGtfsTripElement(object):
-    """ Tests basic functionality of gtfs.TripElement objects """
+    """ Tests basic functionality of models.TripElement objects """
 
     def test_construction(self):
         provider = GtfsProviderSingleRowMock()
@@ -141,7 +141,7 @@ class TestGtfsTripElement(object):
         assert len(trip_elements) == 1
 
         first_element = trip_elements[0]
-        trip_element = gtfs.TripElement(first_element)
+        trip_element = models.TripElement(first_element)
 
         assert trip_element.is_valid()
 
@@ -160,7 +160,7 @@ class TestGtfsTripElement(object):
         assert trip_element.get_direction_id() == first_element[u"direction_id"]
 
 class TestGtfsStop(object):
-    """ Tests basic functionality of gtfs.Stop objects """
+    """ Tests basic functionality of models.Stop objects """
 
     def test_construction(self):
         provider = GtfsProviderSingleRowMock()
@@ -168,7 +168,7 @@ class TestGtfsStop(object):
         assert len(stops_elements) == 1
 
         first_element = stops_elements[0]
-        stop = gtfs.Stop(first_element)
+        stop = models.Stop(first_element)
 
         assert stop.is_valid()
 
@@ -180,7 +180,7 @@ class TestGtfsStop(object):
         assert stop.get_stop_lon() == first_element[u"stop_lon"]
 
 class TestGtfsStopTime(object):
-    """ Tests basic functionality of gtfs.StopTime objects """
+    """ Tests basic functionality of models.StopTime objects """
 
     def test_construction(self):
         provider = GtfsProviderSingleRowMock()
@@ -188,7 +188,7 @@ class TestGtfsStopTime(object):
         assert len(stop_times) == 1
 
         first_element = stop_times[0]
-        stop_time = gtfs.StopTime(first_element)
+        stop_time = models.StopTime(first_element)
 
         assert stop_time.is_valid()
 

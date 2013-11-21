@@ -1,9 +1,9 @@
 import nose
-from graphs import WeightedDiGraph
-from graphs import bellman_ford
-from graphs import create_path_from_graph
-from graphs import Path
-from graphs import dijikstra
+from graphs.graphs import WeightedDiGraph
+from graphs.graphs import bellman_ford
+from graphs.graphs import create_path_from_graph
+from graphs.graphs import Path
+from graphs.graphs import dijikstra
 
 class TestWeightedDigraph(object):
 

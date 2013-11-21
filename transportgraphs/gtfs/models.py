@@ -5,8 +5,6 @@ Data model for General Transit Feed Specification (GTFS) data.
 
 """
 
-from exceptions import NotImplementedError
-
 UTF8 = 'utf-8'
 
 AGENCY_KEYS = [

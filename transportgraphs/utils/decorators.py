@@ -1,5 +1,4 @@
 import os.path
-from exceptions import ValueError
 
 class CheckPathIsValid(object):
     """ Decorator for functions that take a single argument that

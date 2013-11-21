@@ -3,7 +3,6 @@
 import os
 import utils.ucsv
 from utils.decorators import CheckPathIsValid
-import gtfs
 from abc import ABCMeta, abstractmethod
 
 class GtfsProvider(object):
