@@ -1,35 +1,9 @@
-from nose.tools import raises
 import os
-from utils.decorators import CheckPathIsValid
-
+from nose.tools import raises
 import gtfs
-
 from gtfsprovider import GtfsProviderCsv
 from gtfsprovider import GtfsProviderSingleRowMock
-
-@CheckPathIsValid
-def function_to_decorate(path):
-    """ For use in TestCheckPathIsValidDecorator unit tests"""
-    return path
-
-
-class TestCheckPathIsValidDecorator(object):
-    """ Unit tests for decorators.CheckPathIsValid """
-
-    def test_with_valid_path(self):
-        """ Test with the path to the current directory """
-        path = os.path.abspath(os.curdir)
-        output = function_to_decorate(path)
-        assert output == path
-
-    @raises(ValueError)
-    def test_with_invalid_path(self):
-        """ Test with the path to the current directoy invalidated
-            by lopping off some chars and adding random ones """
-        path = os.path.abspath(os.curdir)
-        path = path[:-3] + "asdfasjdkjhg"
-        output = function_to_decorate(path)
-        assert False
+from utils.decorators import CheckPathIsValid
 
 
 class TestCsvGtfsProvider(object):
