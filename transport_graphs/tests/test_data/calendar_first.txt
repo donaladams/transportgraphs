@@ -1,0 +1,1 @@
+[{u'end_date': u'20121231', u'monday': u'1', u'tuesday': u'1', u'friday': u'1', u'wednesday': u'1', u'thursday': u'1', u'start_date': u'20121118', u'sunday': u'0', u'service_id': u'1', u'saturday': u'0'}]

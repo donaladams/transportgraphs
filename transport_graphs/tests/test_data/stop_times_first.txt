@@ -1,0 +1,1 @@
+[{u'pickup_type': u'0', u'shape_dist_traveled': u'0', u'arrival_time': u'16:15:00', u'stop_sequence': u'1', u'stop_id': u'8240DB003813', u'drop_off_type': u'0', u'trip_id': u'1.1714.0-33A-y12-1.155.I', u'departure_time': u'16:15:00'}]

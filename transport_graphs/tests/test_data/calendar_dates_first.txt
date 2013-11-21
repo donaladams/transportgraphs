@@ -1,0 +1,1 @@
+[{u'date': u'20121225', u'service_id': u'1', u'exception_type': u'2'}]

@@ -1,0 +1,1 @@
+[{u'stop_lat': u'53.3522439241978', u'stop_name': u'Parnell Square, Rotunda', u'stop_lon': u'-6.26369319257185', u'stop_id': u'8220DB000002'}]

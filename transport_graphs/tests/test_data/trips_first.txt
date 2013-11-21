@@ -1,0 +1,1 @@
+[{u'route_id': u'0-1-y12-1', u'direction_id': u'0', u'trip_headsign': u'Shanard Avenue - Simmonscourt View', u'service_id': u'1', u'shape_id': u'0-1-y12-1.1.O', u'trip_id': u'4777.2.0-1-y12-1.1.O'}]
