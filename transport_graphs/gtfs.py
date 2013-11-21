@@ -172,3 +172,36 @@ class TripElement(GtfsObject):
             self.get_trip_headsign(),
             self.get_direction_id()
             )
+
+
+class Stop(GtfsObject):
+    """ Corresponds to a single row in the stops dataset """
+
+    def __init__(self, data_dict):
+        super(Stop, self).__init__(STOPS_KEYS, data_dict)
+
+    def get_stop_id(self):
+        return self.get(u"stop_id")
+
+    def get_stop_name(self):
+        return self.get(u"stop_name")
+
+    def get_stop_lat(self):
+        return self.get(u"stop_lat")
+
+    def get_stop_lon(self):
+        return self.get(u"stop_lon")
+
+    def unique_id(self):
+        """ Returns a unique key for this object.
+            This is simply stop_id. """
+        return self.get_stop_id()
+
+    def __unicode__(self):
+        return u"Stop: {0}, {1}, {2}, {3}".format(
+            self.get_stop_id(),
+            self.get_stop_name(),
+            self.get_stop_lat(),
+            self.get_stop_lon(),
+            )
+

@@ -185,7 +185,25 @@ class TestGtfsTripElement(object):
         assert trip_element.get_trip_headsign() == first_element[u"trip_headsign"]
         assert trip_element.get_direction_id() == first_element[u"direction_id"]
 
+class TestGtfsStop(object):
+    """ Tests basic functionality of gtfs.Stop objects """
 
+    def test_construction(self):
+        provider = GtfsProviderSingleRowMock()
+        stops_elements = provider.load_stops()
+        assert len(stops_elements) == 1
+
+        first_element = stops_elements[0]
+        stop = gtfs.Stop(first_element)
+
+        assert stop.is_valid()
+
+        expected_unique_id = first_element[u"stop_id"]
+        assert stop.unique_id() == expected_unique_id
+        assert stop.get_stop_id() == expected_unique_id
+        assert stop.get_stop_name() == first_element[u"stop_name"]
+        assert stop.get_stop_lat() == first_element[u"stop_lat"]
+        assert stop.get_stop_lon() == first_element[u"stop_lon"]
 
 
 
