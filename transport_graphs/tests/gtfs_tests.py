@@ -1,13 +1,17 @@
 from nose.tools import raises
 import os
 from utils.decorators import CheckPathIsValid
+
 import gtfs
+
 from gtfsprovider import GtfsProviderCsv
+from gtfsprovider import GtfsProviderSingleRowMock
 
 @CheckPathIsValid
 def function_to_decorate(path):
     """ For use in TestCheckPathIsValidDecorator unit tests"""
     return path
+
 
 class TestCheckPathIsValidDecorator(object):
     """ Unit tests for decorators.CheckPathIsValid """
@@ -27,6 +31,7 @@ class TestCheckPathIsValidDecorator(object):
         output = function_to_decorate(path)
         assert False
 
+
 class TestCsvGtfsProvider(object):
     """ Tests the loading of GTFS csvs """
 
@@ -39,7 +44,6 @@ class TestCsvGtfsProvider(object):
         data = provider.load_agency()
         # data is not empty
         assert data
-
         first = data[0]
         # data dict contains the correct keys
         assert set(first.keys()) == set(gtfs.AGENCY_KEYS)
@@ -128,5 +132,31 @@ class TestCsvGtfsProvider(object):
         # data dict contains the correct keys
         assert set(first.keys()) == set(gtfs.TRIPS_KEYS)
 
+
+def write_to_file(filename, data):
+    """ Useful for writing datastructures to file as text """
+    with open(filename, 'w') as the_file:
+        the_file.write(str(data))
+
+
+class TestGtfsRoute(object):
+    """ Tests basic functionality of gtfs.Route objects """
+
+    def test_construction(self):
+        provider = GtfsProviderSingleRowMock()
+        routes = provider.load_routes()
+        assert len(routes) == 1
+
+        first_route = routes[0]
+        route = gtfs.Route(first_route)
+
+        print first_route
+
+        assert route.is_valid()
+        assert route.unique_id() == first_route[u"route_id"]
+        assert route.get_route_id() == route.unique_id()
+        assert route.get_route_short_name() == first_route[u"route_short_name"]
+        assert route.get_route_long_name() == first_route[u"route_long_name"]
+        assert route.get_route_type() == first_route[u"route_type"]
 
 
