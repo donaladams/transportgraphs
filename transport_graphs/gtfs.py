@@ -5,6 +5,8 @@ Data model for General Transit Feed Specification (GTFS) data.
 
 """
 
+from exceptions import NotImplementedError
+
 UTF8 = 'utf-8'
 
 AGENCY_KEYS = [
@@ -93,7 +95,9 @@ class GtfsObject(object):
     def unique_id(self):
         """ Returns a unique key for this object.
             Should be defined in derived classes """
-        pass
+        raise NotImplementedError(
+            "unique id should be defined in derived class. Do not use this class directly! "
+            )
 
     def __eq__(self, other):
         """ Basing equality on id """
@@ -204,4 +208,59 @@ class Stop(GtfsObject):
             self.get_stop_lat(),
             self.get_stop_lon(),
             )
+
+
+class StopTime(GtfsObject):
+    """ Corresponds to a single row in the stop_times dataset """
+    def __init__(self, data_dict):
+        super(StopTime, self).__init__(STOP_TIMES_KEYS, data_dict)
+
+    def get_trip_id(self):
+        return self.get(u"trip_id")
+
+    def get_arrival_time(self):
+        return self.get(u"arrival_time")
+
+    def get_departure_time(self):
+        return self.get(u"departure_time")
+
+    def get_stop_id(self):
+        return self.get(u"stop_id")
+
+    def get_stop_sequence(self):
+        return self.get(u"stop_sequence")
+
+    def get_pickup_type(self):
+        return self.get(u"pickup_type")
+
+    def get_drop_off_type(self):
+        return self.get(u"drop_off_type")
+
+    def get_shape_dist_traveled(self):
+        return self.get(u"shape_dist_traveled")
+
+    def unique_id(self):
+        """ Returns a unique key for this object.
+            This is as tuple of the required values. """
+        return (
+            self.get_trip_id(),
+            self.get_arrival_time(),
+            self.get_departure_time(),
+            self.get_stop_id(),
+            self.get_stop_sequence()
+            )
+
+    def __unicode__(self):
+        return u"StopTime: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}".format(
+            self.get_trip_id(),
+            self.get_arrival_time(),
+            self.get_departure_time(),
+            self.get_stop_id(),
+            self.get_stop_sequence(),
+            self.get_pickup_type(),
+            self.get_drop_off_type(),
+            self.get_shape_dist_traveled()
+            )
+
+
 

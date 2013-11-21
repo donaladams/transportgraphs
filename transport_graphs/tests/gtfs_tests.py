@@ -205,5 +205,35 @@ class TestGtfsStop(object):
         assert stop.get_stop_lat() == first_element[u"stop_lat"]
         assert stop.get_stop_lon() == first_element[u"stop_lon"]
 
+class TestGtfsStopTime(object):
+    """ Tests basic functionality of gtfs.StopTime objects """
+
+    def test_construction(self):
+        provider = GtfsProviderSingleRowMock()
+        stop_times = provider.load_stop_times()
+        assert len(stop_times) == 1
+
+        first_element = stop_times[0]
+        stop_time = gtfs.StopTime(first_element)
+
+        assert stop_time.is_valid()
+
+        expected_unique_id = (
+            first_element[u"trip_id"],
+            first_element[u"arrival_time"],
+            first_element[u"departure_time"],
+            first_element[u"stop_id"],
+            first_element[u"stop_sequence"]
+            )
+
+        assert stop_time.unique_id() == expected_unique_id
+        assert stop_time.get_trip_id() == first_element[u"trip_id"]
+        assert stop_time.get_arrival_time() == first_element[u"arrival_time"]
+        assert stop_time.get_departure_time() == first_element[u"departure_time"]
+        assert stop_time.get_stop_id() == first_element[u"stop_id"]
+        assert stop_time.get_stop_sequence() == first_element[u"stop_sequence"]
+        assert stop_time.get_pickup_type() == first_element[u"pickup_type"]
+        assert stop_time.get_drop_off_type() == first_element[u"drop_off_type"]
+        assert stop_time.get_shape_dist_traveled() == first_element[u"shape_dist_traveled"]
 
 
