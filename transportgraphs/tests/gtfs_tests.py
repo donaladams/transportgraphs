@@ -339,9 +339,6 @@ class TestGtfsShapeElement(object):
             first_element[u"shape_pt_sequence"]
             )
 
-        print expected_unique_id
-        print shape_element.unique_id()
-
         assert shape_element.unique_id() == expected_unique_id
         assert shape_element.get_shape_id() == first_element[u"shape_id"]
         assert shape_element.get_shape_pt_lat() == first_element[u"shape_pt_lat"]
