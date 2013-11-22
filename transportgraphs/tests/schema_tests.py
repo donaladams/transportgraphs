@@ -137,7 +137,7 @@ class TestGtfsCsvSchema(object):
         assert first_output[u"shape_dist_traveled"] == expected_distance
 
     def test_trip_schema_correct(self):
-        """ Stop Times schema works on good data """
+        """ Trips schema works on good data """
         data = mocks.GtfsSingleRowMock().trips()
         schema = GtfsCsvSchema()
         output = schema.apply(GtfsNames.TRIPS, data)

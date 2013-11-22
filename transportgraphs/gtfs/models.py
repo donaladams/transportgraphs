@@ -286,7 +286,7 @@ class Agency(GtfsObject):
 
     def unique_id(self):
         """ Returns a unique key for this object.
-            This is simply stop_id. """
+            This is simply agency_name. """
         return self.get_agency_name()
 
     def __unicode__(self):
@@ -296,24 +296,126 @@ class Agency(GtfsObject):
             self.get_agency_timezone()
             )
 
-class CalenderElement(GtfsObject):
+
+class CalendarElement(GtfsObject):
     """ Represents an element in the calendar dataset """
     def __init__(self, data_dict):
-        super(Agency, self).__init__(CALENDAR_KEYS, data_dict)
-        raise NotImplementedError()
+        super(CalendarElement, self).__init__(CALENDAR_KEYS, data_dict)
+
+    def get_service_id(self):
+        return self.get(u"service_id")
+
+    def get_monday(self):
+        return self.get(u"monday")
+
+    def get_tuesday(self):
+        return self.get(u"tuesday")
+
+    def get_wednesday(self):
+        return self.get(u"wednesday")
+
+    def get_thursday(self):
+        return self.get(u"thursday")
+
+    def get_friday(self):
+        return self.get(u"friday")
+
+    def get_saturday(self):
+        return self.get(u"saturday")
+
+    def get_sunday(self):
+        return self.get(u"sunday")
+
+    def get_start_date(self):
+        return self.get(u"start_date")
+
+    def get_end_date(self):
+        return self.get(u"end_date")
+
+    def get_week(self):
+        """ Returns the day values in a tuple """
+        return (
+            self.get_monday(),
+            self.get_tuesday(),
+            self.get_wednesday(),
+            self.get_thursday(),
+            self.get_friday(),
+            self.get_saturday(),
+            self.get_sunday(),
+            )
+
+    def unique_id(self):
+        """ Returns a unique key for this object.
+            This is simply service_id. """
+        return self.get_service_id()
+
+    def __unicode__(self):
+        return u"CalenderElement: {0}, {1}, {2}, {3}".format(
+            self.get_service_id(),
+            self.get_start_date(),
+            self.get_end_date(),
+            self.get_week(),
+            )
 
 
-class CalenderDatesElement(GtfsObject):
+class CalendarDatesElement(GtfsObject):
     """ Represents an element in the calendar dates dataset """
     def __init__(self, data_dict):
-        super(CalenderDatesElement, self).__init__(CALENDAR_DATES_KEYS, data_dict)
-        raise NotImplementedError()
+        super(CalendarDatesElement, self).__init__(CALENDAR_DATES_KEYS, data_dict)
+
+    def get_service_id(self):
+        return self.get(u"service_id")
+
+    def get_date(self):
+        return self.get(u"date")
+
+    def get_exception_type(self):
+        return self.get(u"exception_type")
+
+    def unique_id(self):
+        """ Returns a unique key for this object.
+            This is simply service_id. """
+        return self.get_service_id()
+
+    def __unicode__(self):
+        return u"CalenderDatesElement: {0}, {1}, {2}".format(
+            self.get_service_id(),
+            self.get_date(),
+            self.get_exception_type(),
+            )
 
 
-class Shape(GtfsObject):
+class ShapeElement(GtfsObject):
     """ Represents an element in the shapes dataset """
     def __init__(self, data_dict):
-        super(Shape, self).__init__(SHAPES_KEYS, data_dict)
-        raise NotImplementedError()
+        super(ShapeElement, self).__init__(SHAPES_KEYS, data_dict)
 
+    def get_shape_id(self):
+        return self.get(u"shape_id")
+
+    def get_shape_pt_lat(self):
+        return self.get(u"shape_pt_lat")
+
+    def get_shape_pt_lon(self):
+        return self.get(u"shape_pt_lon")
+
+    def get_shape_pt_sequence(self):
+        return self.get(u"shape_pt_sequence")
+
+    def get_shape_dist_traveled(self):
+        return self.get(u"shape_dist_traveled")
+
+    def unique_id(self):
+        """ Returns a unique key for this object.
+            This is a tuple of (shape_id, shape_pt_sequence). """
+        return (self.get_shape_id(), self.get_shape_pt_sequence())
+
+    def __unicode__(self):
+        return u"Shape: {0}, {1}, {2}, {3}, {4}".format(
+            self.get_shape_id(),
+            self.get_shape_pt_lat(),
+            self.get_shape_pt_lon(),
+            self.get_shape_pt_sequence(),
+            self.get_shape_dist_traveled(),
+            )
 

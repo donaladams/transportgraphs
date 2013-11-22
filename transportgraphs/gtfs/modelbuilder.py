@@ -13,12 +13,12 @@ class GtfsModelBuilder(object):
         data = self.provider.load_agency()
         return [models.Agency(x) for x in data]
 
-    def get_calendar_date_elements(self):
+    def get_calendar_dates_elements(self):
         """ Returns CalenderDatesElement object for
             each of the CalenderDates given by the provider """
         data = self.provider.load_calendar_dates()
         return [
-            models.CalenderDatesElement(x) for x in data
+            models.CalendarDatesElement(x) for x in data
             ]
 
     def get_calendar_elements(self):
@@ -27,11 +27,11 @@ class GtfsModelBuilder(object):
         data = self.provider.load_calendar()
         return [models.CalendarElement(x) for x in data]
 
-    def get_shapes(self):
+    def get_shape_elements(self):
         """ Returns Shape object for
             each of the Shapes given by the provider """
         data = self.provider.load_shapes()
-        return [models.Shape(x) for x in data]
+        return [models.ShapeElement(x) for x in data]
 
     def get_stops(self):
         """ Returns Stop class for

@@ -233,13 +233,133 @@ class TestGtfsStopTime(object):
         assert stop_time.get_shape_dist_traveled() == first_element[u"shape_dist_traveled"]
 
 
+class TestGtfsAgency(object):
+    """ Tests the basic functionality of gtfs.models.Agency """
+    def test_construction(self):
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderSingleRowMock(schema)
+        agencies = provider.load_agency()
+
+        assert len(agencies) == 1
+
+        first_element = agencies[0]
+        agency = models.Agency(first_element)
+
+        assert agency.is_valid()
+
+        expected_unique_id = first_element[u"agency_name"]
+        assert agency.unique_id() == expected_unique_id
+        assert agency.get_agency_name() == expected_unique_id
+        assert agency.get_agency_url() == first_element[u"agency_url"]
+
+        expected_timezone = first_element[u"agency_timezone"]
+        assert(agency.get_agency_timezone() == expected_timezone)
+
+
+class TestGtfsCalendarElement(object):
+    """ Tests basic functionality of models.CalendarElement objects """
+
+    def test_construction(self):
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderSingleRowMock(schema)
+        calendar_elements = provider.load_calendar()
+        assert len(calendar_elements) == 1
+
+        first_element = calendar_elements[0]
+        calendar = models.CalendarElement(first_element)
+
+        assert calendar.is_valid()
+
+        expected_unique_id = first_element[u"service_id"]
+
+        assert calendar.unique_id() == expected_unique_id
+        assert calendar.get_service_id() == expected_unique_id
+        assert calendar.get_monday() == first_element[u"monday"]
+        assert calendar.get_tuesday() == first_element[u"tuesday"]
+        assert calendar.get_wednesday() == first_element[u"wednesday"]
+        assert calendar.get_thursday() == first_element[u"thursday"]
+        assert calendar.get_friday() == first_element[u"friday"]
+        assert calendar.get_saturday() == first_element[u"saturday"]
+        assert calendar.get_sunday() == first_element[u"sunday"]
+
+        expected_week = (
+            calendar.get_monday(),
+            calendar.get_tuesday(),
+            calendar.get_wednesday(),
+            calendar.get_thursday(),
+            calendar.get_friday(),
+            calendar.get_saturday(),
+            calendar.get_sunday(),
+            )
+        assert calendar.get_week() == expected_week
+
+        expected_start_date = first_element[u"start_date"]
+        expected_end_date = first_element[u"end_date"]
+        assert calendar.get_start_date() == expected_start_date
+        assert calendar.get_end_date() == expected_end_date
+
+class TestGtfsCalendarDatesElement(object):
+    """ Tests basic functionality of models.CalendarDatesElement objects """
+
+    def test_construction(self):
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderSingleRowMock(schema)
+        calendar_dates_elements = provider.load_calendar_dates()
+        assert len(calendar_dates_elements) == 1
+
+        first_element = calendar_dates_elements[0]
+        calendar_date = models.CalendarDatesElement(first_element)
+
+        assert calendar_date.is_valid()
+
+        expected_unique_id = first_element[u"service_id"]
+        assert calendar_date.unique_id() == expected_unique_id
+        assert calendar_date.get_service_id() == expected_unique_id
+        assert calendar_date.get_date() == first_element[u"date"]
+
+        expected_exception_type = first_element[u"exception_type"]
+        assert calendar_date.get_exception_type() == expected_exception_type
+
+class TestGtfsShapeElement(object):
+    """ Tests basic functionality of models.CalendarDatesElement objects """
+
+    def test_construction(self):
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderSingleRowMock(schema)
+        shape_elements = provider.load_shapes()
+        assert len(shape_elements) == 1
+
+        first_element = shape_elements[0]
+        shape_element = models.ShapeElement(first_element)
+
+        assert shape_element.is_valid()
+
+        expected_unique_id = (
+            first_element[u"shape_id"],
+            first_element[u"shape_pt_sequence"]
+            )
+
+        print expected_unique_id
+        print shape_element.unique_id()
+
+        assert shape_element.unique_id() == expected_unique_id
+        assert shape_element.get_shape_id() == first_element[u"shape_id"]
+        assert shape_element.get_shape_pt_lat() == first_element[u"shape_pt_lat"]
+        assert shape_element.get_shape_pt_lon() == first_element[u"shape_pt_lon"]
+
+        expected_sequence = first_element[u"shape_pt_sequence"]
+        assert shape_element.get_shape_pt_sequence() == expected_sequence
+
+        expected_distance = first_element[u"shape_dist_traveled"]
+        assert shape_element.get_shape_dist_traveled() == expected_distance
+
+
 class TestModelBuilder(object):
     """ Tests the model builder"""
     DATA_DIRECTORY = os.path.join(os.path.abspath(os.curdir), "tests/test_data")
 
-
-
     def test_get_agency(self):
+        """ Gets Agency models correctly """
         schema = GtfsCsvSchema()
         provider = GtfsProviderSingleRowMock(schema)
         builder = GtfsModelBuilder(provider, schema)
@@ -252,6 +372,7 @@ class TestModelBuilder(object):
         return model.is_valid()
 
     def test_get_routes(self):
+        """ Gets Route models correctly """
         schema = GtfsCsvSchema()
         provider = GtfsProviderSingleRowMock(schema)
         builder = GtfsModelBuilder(provider, schema)
@@ -264,6 +385,7 @@ class TestModelBuilder(object):
         assert route.is_valid()
 
     def test_get_stops(self):
+        """ Gets Stop models correctly """
         schema = GtfsCsvSchema()
         provider = GtfsProviderSingleRowMock(schema)
         builder = GtfsModelBuilder(provider, schema)
@@ -276,6 +398,7 @@ class TestModelBuilder(object):
         assert stop.is_valid()
 
     def test_get_stop_times(self):
+        """ Gets Stop Time models correctly """
         schema = GtfsCsvSchema()
         provider = GtfsProviderSingleRowMock(schema)
         builder = GtfsModelBuilder(provider, schema)
@@ -288,6 +411,7 @@ class TestModelBuilder(object):
         assert stop_time.is_valid()
 
     def test_get_trip_elements(self):
+        """ Gets Trip Element models correctly """
         schema = GtfsCsvSchema()
         provider = GtfsProviderSingleRowMock(schema)
         builder = GtfsModelBuilder(provider, schema)
@@ -299,7 +423,45 @@ class TestModelBuilder(object):
         assert type(trip_element) == models.TripElement
         assert trip_element.is_valid()
 
+    def test_get_calendar_elements(self):
+        """ Gets CalendarElement models correctly """
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderSingleRowMock(schema)
+        builder = GtfsModelBuilder(provider, schema)
+        calendar_elements = builder.get_calendar_elements()
 
+        assert len(calendar_elements) > 0
+        calendar_element = calendar_elements[0]
+
+        assert type(calendar_element) == models.CalendarElement
+        assert calendar_element.is_valid()
+
+
+    def test_get_calendar_date_elements(self):
+        """ Gets CalendarDatesElement models correctly """
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderSingleRowMock(schema)
+        builder = GtfsModelBuilder(provider, schema)
+        calendar_date_elements = builder.get_calendar_dates_elements()
+
+        assert len(calendar_date_elements) > 0
+        calendar_date_element = calendar_date_elements[0]
+
+        assert type(calendar_date_element) == models.CalendarDatesElement
+        assert calendar_date_element.is_valid()
+
+    def test_get_shape_elements(self):
+        """ Gets ShapeElement models correctly """
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderSingleRowMock(schema)
+        builder = GtfsModelBuilder(provider, schema)
+        shapes = builder.get_shape_elements()
+
+        assert len(shapes) > 0
+        shape_element = shapes[0]
+
+        assert type(shape_element) == models.ShapeElement
+        assert shape_element.is_valid()
 
 
 
