@@ -4,6 +4,15 @@ gtfs.py:
 Data model for General Transit Feed Specification (GTFS) data.
 
 """
+class GtfsNames:
+    AGENCY = 0
+    CALENDAR = 1
+    CALENDAR_DATES = 2
+    ROUTES = 3
+    SHAPES = 4
+    STOPS = 5
+    STOP_TIMES = 6
+    TRIPS = 7
 
 UTF8 = 'utf-8'
 

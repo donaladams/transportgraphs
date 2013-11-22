@@ -4,7 +4,7 @@ import gtfs.models as models
 from gtfs.gtfsprovider import GtfsProviderCsv
 from gtfs.gtfsprovider import GtfsProviderSingleRowMock
 from utils.decorators import CheckPathIsValid
-
+from gtfs.schema import GtfsCsvSchema
 
 class TestCsvGtfsProvider(object):
     """ Tests the loading of GTFS csvs """
@@ -14,7 +14,8 @@ class TestCsvGtfsProvider(object):
     def test_load_agency(self):
         """ Tests the loading of the agency.txt file
             from test_data """
-        provider = GtfsProviderCsv(self.DATA_DIRECTORY)
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderCsv(self.DATA_DIRECTORY, schema)
         data = provider.load_agency()
         # data is not empty
         assert data
@@ -25,7 +26,9 @@ class TestCsvGtfsProvider(object):
     def test_load_calendar_dates(self):
         """ Tests the loading of the calendar_dates.txt file
             from test_data """
-        provider = GtfsProviderCsv(self.DATA_DIRECTORY)
+
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderCsv(self.DATA_DIRECTORY, schema)
         data = provider.load_calendar_dates()
         #data is not empty
         assert data
@@ -37,7 +40,9 @@ class TestCsvGtfsProvider(object):
     def test_load_calendar(self):
         """ Tests the loading of the calendar.txt file
             from test_data """
-        provider = GtfsProviderCsv(self.DATA_DIRECTORY)
+
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderCsv(self.DATA_DIRECTORY, schema)
         data = provider.load_calendar()
         #data is not empty
         assert data
@@ -49,7 +54,8 @@ class TestCsvGtfsProvider(object):
     def test_load_shapes(self):
         """ Tests the loading of the shapes.txt file
             from test_data """
-        provider = GtfsProviderCsv(self.DATA_DIRECTORY)
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderCsv(self.DATA_DIRECTORY, schema)
         data = provider.load_shapes()
         #data is not empty
         assert data
@@ -61,7 +67,9 @@ class TestCsvGtfsProvider(object):
     def test_load_stops(self):
         """ Tests the loading of the stops.txt file
             from test_data """
-        provider = GtfsProviderCsv(self.DATA_DIRECTORY)
+
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderCsv(self.DATA_DIRECTORY, schema)
         data = provider.load_stops()
         #data is not empty
         assert data
@@ -73,7 +81,9 @@ class TestCsvGtfsProvider(object):
     def test_load_routes(self):
         """ Tests the loading of the routes.txt file
             from test_data """
-        provider = GtfsProviderCsv(self.DATA_DIRECTORY)
+
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderCsv(self.DATA_DIRECTORY, schema)
         data = provider.load_routes()
         #data is not empty
         assert data
@@ -85,7 +95,9 @@ class TestCsvGtfsProvider(object):
     def test_load_stop_times(self):
         """ Tests the loading of the stop_times.txt file
             from test_data """
-        provider = GtfsProviderCsv(self.DATA_DIRECTORY)
+
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderCsv(self.DATA_DIRECTORY, schema)
         data = provider.load_stop_times()
         #data is not empty
         assert data
@@ -97,7 +109,9 @@ class TestCsvGtfsProvider(object):
     def test_load_trips(self):
         """ Tests the loading of the trips.txt file
             from test_data """
-        provider = GtfsProviderCsv(self.DATA_DIRECTORY)
+
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderCsv(self.DATA_DIRECTORY, schema)
         data = provider.load_trips()
         #data not empty
         assert data
@@ -122,6 +136,7 @@ class TestGtfsRoute(object):
         assert len(routes) == 1
 
         first_route = routes[0]
+        print first_route
         route = models.Route(first_route)
 
         assert route.is_valid()
