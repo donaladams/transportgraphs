@@ -274,8 +274,27 @@ class Agency(GtfsObject):
     """ Represents an element in the agency dataset """
     def __init__(self, data_dict):
         super(Agency, self).__init__(AGENCY_KEYS, data_dict)
-        raise NotImplementedError()
 
+    def get_agency_name(self):
+        return self.get(u"agency_name")
+
+    def get_agency_url(self):
+        return self.get(u"agency_url")
+
+    def get_agency_timezone(self):
+        return self.get(u"agency_timezone")
+
+    def unique_id(self):
+        """ Returns a unique key for this object.
+            This is simply stop_id. """
+        return self.get_agency_name()
+
+    def __unicode__(self):
+        return u"Agency: {0}, {1}, {2}".format(
+            self.get_agency_name(),
+            self.get_agency_url(),
+            self.get_agency_timezone()
+            )
 
 class CalenderElement(GtfsObject):
     """ Represents an element in the calendar dataset """

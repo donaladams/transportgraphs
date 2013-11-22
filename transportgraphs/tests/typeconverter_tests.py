@@ -158,6 +158,7 @@ class TestUnicodeToDatetime(object):
         #should not reach here
         assert False
 
+
 class TestUnicodeToTime(object):
     """ Test conversion of unicode to datetime.time """
 

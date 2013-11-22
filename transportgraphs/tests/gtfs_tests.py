@@ -4,6 +4,7 @@ import gtfs.models as models
 from gtfs.gtfsprovider import GtfsProviderCsv
 from gtfs.gtfsprovider import GtfsProviderSingleRowMock
 from utils.decorators import CheckPathIsValid
+from gtfs.modelbuilder import GtfsModelBuilder
 from gtfs.schema import GtfsCsvSchema
 
 class TestCsvGtfsProvider(object):
@@ -233,7 +234,72 @@ class TestGtfsStopTime(object):
 
 
 class TestModelBuilder(object):
+    """ Tests the model builder"""
+    DATA_DIRECTORY = os.path.join(os.path.abspath(os.curdir), "tests/test_data")
 
-    schema = GtfsCsvSchema()
-    provider = GtfsProviderCsv(schema)
+
+
+    def test_get_agency(self):
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderSingleRowMock(schema)
+        builder = GtfsModelBuilder(provider, schema)
+        agencies = builder.get_agencies()
+
+        assert len(agencies) > 0
+
+        model = agencies[0]
+        assert type(model) == models.Agency
+        return model.is_valid()
+
+    def test_get_routes(self):
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderSingleRowMock(schema)
+        builder = GtfsModelBuilder(provider, schema)
+        routes = builder.get_routes()
+
+        assert len(routes)  > 0
+        route = routes[0]
+
+        assert type(route) == models.Route
+        assert route.is_valid()
+
+    def test_get_stops(self):
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderSingleRowMock(schema)
+        builder = GtfsModelBuilder(provider, schema)
+        stops = builder.get_stops()
+
+        assert len(stops) > 0
+        stop = stops[0]
+
+        assert type(stop) == models.Stop
+        assert stop.is_valid()
+
+    def test_get_stop_times(self):
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderSingleRowMock(schema)
+        builder = GtfsModelBuilder(provider, schema)
+        stop_times = builder.get_stop_times()
+
+        assert len(stop_times) > 0
+        stop_time = stop_times[0]
+
+        assert type(stop_time) == models.StopTime
+        assert stop_time.is_valid()
+
+    def test_get_trip_elements(self):
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderSingleRowMock(schema)
+        builder = GtfsModelBuilder(provider, schema)
+        trip_elements = builder.get_trip_elements()
+
+        assert len(trip_elements) > 0
+        trip_element = trip_elements[0]
+
+        assert type(trip_element) == models.TripElement
+        assert trip_element.is_valid()
+
+
+
+
 
