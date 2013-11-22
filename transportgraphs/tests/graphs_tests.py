@@ -1,4 +1,4 @@
-import nose
+from nose.tools import raises
 from graphs.graphs import WeightedDiGraph
 from graphs.graphs import bellman_ford
 from graphs.graphs import create_path_from_graph
@@ -6,6 +6,7 @@ from graphs.graphs import Path
 from graphs.graphs import dijikstra
 
 class TestWeightedDigraph(object):
+    """ Tests the functionality of the WeightedDiGraph class """
 
     def test_construction(self):
         """ It builds a correct graph """
@@ -42,7 +43,6 @@ class TestWeightedDigraph(object):
             for edge in graph.get_edges()]
 
         assert set(edges) == set(edge_tuples)
-
 
     def test_get_neighbours(self):
         """ It gets neighbours correctly """
@@ -102,6 +102,41 @@ class TestWeightedDigraph(object):
                 ]
             )
 
+    def test_has_negative_edge_weights_pass(self):
+        """ Graph with negative edge weights """
+        number_vertices = 6
+        edges = [
+            (0, 1, 5),
+            (1, 4, 7),
+            (3, 2, -8),
+            (2, 4, 5),
+            (1, 3, 9),
+            (2, 1, -1),
+            (1, 2, 1),
+            (4, 5, 3)
+            ]
+
+        graph = WeightedDiGraph(number_vertices, edges)
+        assert graph.has_negative_edge_weights()
+
+    def test_has_negative_edge_weights_fail(self):
+        """ Graph with negative edge weights """
+        number_vertices = 6
+        edges = [
+            (0, 1, 5),
+            (1, 4, 7),
+            (3, 2, 8),
+            (2, 4, 5),
+            (1, 3, 9),
+            (2, 1, 1),
+            (1, 2, 1),
+            (4, 5, 3)
+            ]
+
+        graph = WeightedDiGraph(number_vertices, edges)
+        assert not(graph.has_negative_edge_weights())
+
+
 class TestPath(object):
     """ Unit tests for path object """
 
@@ -111,6 +146,7 @@ class TestPath(object):
         assert str(path) == "cost: 10 path: (0, 1, 2, 3, 4)"
 
 class TestBellmanFord(object):
+    """ Test cases for the Bellman-Ford Algorithm """
 
     def test_shortest_paths(self):
         """ Shortest paths found in graph """
@@ -136,6 +172,7 @@ class TestBellmanFord(object):
         assert str(create_path_from_graph(graph, root, 4)) == "cost: 11 path: (0, 1, 2, 4)"
 
 class TestDijikstra(object):
+    """ Test cases for Dijikstra's Algorithm """
 
     def test_shortest_paths(self):
         """ Shortest paths found in graph """
@@ -161,7 +198,24 @@ class TestDijikstra(object):
         assert str(create_path_from_graph(graph, root, 4)) == "cost: 11 path: (0, 1, 2, 4)"
 
 
+    @raises(ValueError)
+    def test_exception_on_negative_edge_weights(self):
+        """ Shortest paths found in graph """
+        edges = [
+            (0, 1, 5),
+            (1, 4, 7),
+            (3, 2, -1),
+            (2, 4, 5),
+            (1, 3, 9),
+            (2, 1, 1),
+            (1, 2, 1)
+            ]
 
+        graph = WeightedDiGraph(5, edges)
+        root = 0
 
+        dijikstra(graph, root)
 
+        #should not reach here
+        assert False
 

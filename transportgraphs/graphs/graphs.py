@@ -34,6 +34,8 @@ class Node(object):
         return "Node {0}, {1}".format(self.node_id, self.workspace)
 
     def __lt__(self, other):
+        """ Custom implementation of less-than method. Based on the current lowest
+        cost of the path in the graph to this node. """
         self_has = self.workspace.has_key(PATH_COST)
         if not self_has:
             return False
@@ -168,6 +170,10 @@ class WeightedDiGraph(object):
         for vertex in self.get_vertices():
             print vertex
 
+    def has_negative_edge_weights(self):
+        """ Indicates if the graph contains negative edge weights. """
+        return any(map(lambda edge: edge.weight < 0, self.get_edges()))
+
 def init_single_source(graph, source_id):
     """ initialises a graph for single source shortest path problems """
     for vertex in graph.get_vertices():
@@ -204,6 +210,12 @@ def make_heap(graph):
 def dijikstra(graph, source):
     """ Performs the dijikstra alrgorithm for the single-source
         shortest path on the given_graph from the given source """
+
+    if graph.has_negative_edge_weights():
+        raise ValueError(
+            "Dijikstra's algorithm cannot be run on graphs \\\
+             with negative edge weights")
+
     init_single_source(graph, source)
     s_vertices = []
     heap = make_heap(graph)
