@@ -21,6 +21,8 @@ class GtfsProvider(object):
         else:
             self.schema = None
 
+        self.requires_schema = True
+
     @abstractmethod
     def load_agency(self):
         pass
@@ -55,6 +57,16 @@ class GtfsProvider(object):
 
     def set_schema(self, schema):
         self.schema = schema
+
+    def apply_schema(self, gtfs_name, data):
+        """ Processes data with schema. If schema not required, returns data as is.
+            Otherwise, RuntimeError is thrown. """
+        if self.schema is not None:
+            return self.schema.apply(gtfs_name, data)
+        elif self.requires_schema:
+            raise RuntimeError("Must supply a schema when requires_schema set to True")
+        else:
+            return data
 
 
 @CheckPathIsValid
@@ -91,42 +103,42 @@ class GtfsProviderCsv(GtfsProvider):
     def load_agency(self):
         """ Loads agency file to a list. """
         data = self.load_gtfs_file(self.directory, self.AGENCY_FILE)
-        return self.schema.apply(GtfsNames.AGENCY, data)
+        return self.apply_schema(GtfsNames.AGENCY, data)
 
     def load_calendar_dates(self):
         """ Loads calendar_dates file to a list. """
         data = self.load_gtfs_file(self.directory, self.CALENDAR_DATES_FILE)
-        return self.schema.apply(GtfsNames.CALENDAR_DATES, data)
+        return self.apply_schema(GtfsNames.CALENDAR_DATES, data)
 
     def load_calendar(self):
         """ Loads calendar file to a list. """
         data = self.load_gtfs_file(self.directory, self.CALENDAR_FILE)
-        return self.schema.apply(GtfsNames.CALENDAR, data)
+        return self.apply_schema(GtfsNames.CALENDAR, data)
 
     def load_shapes(self):
         """ Loads shapes file to a list. """
         data = self.load_gtfs_file(self.directory, self.SHAPES_FILE)
-        return self.schema.apply(GtfsNames.SHAPES, data)
+        return self.apply_schema(GtfsNames.SHAPES, data)
 
     def load_stops(self):
         """ Loads stops file to a list. """
         data = self.load_gtfs_file(self.directory, self.STOPS_FILE)
-        return self.schema.apply(GtfsNames.STOPS, data)
+        return self.apply_schema(GtfsNames.STOPS, data)
 
     def load_routes(self):
         """ Loads routes file to a list. """
         data = self.load_gtfs_file(self.directory, self.ROUTES_FILE)
-        return self.schema.apply(GtfsNames.ROUTES, data)
+        return self.apply_schema(GtfsNames.ROUTES, data)
 
     def load_stop_times(self):
         """ Loads stop_times file to a list. """
         data = self.load_gtfs_file(self.directory, self.STOP_TIMES_FILE)
-        return self.schema.apply(GtfsNames.STOP_TIMES, data)
+        return self.apply_schema(GtfsNames.STOP_TIMES, data)
 
     def load_trips(self):
         """ Loads trips file to a list. """
         data = self.load_gtfs_file(self.directory, self.TRIPS_FILE)
-        return self.schema.apply(GtfsNames.TRIPS, data)
+        return self.apply_schema(GtfsNames.TRIPS, data)
 
     def load_gtfs_file(self, directory, filename):
         """ Loads a GTFS file into a list """
@@ -147,35 +159,35 @@ class GtfsProviderSingleRowMock(GtfsProvider):
 
     def load_agency(self):
         data = mocks.GtfsSingleRowMock().agency()
-        return data
+        return self.apply_schema(GtfsNames.AGENCY, data)
 
     def load_calendar_dates(self):
         data = mocks.GtfsSingleRowMock().calendar_dates()
-        return data
+        return self.apply_schema(GtfsNames.CALENDAR_DATES, data)
 
     def load_calendar(self):
         data = mocks.GtfsSingleRowMock().calendar()
-        return data
+        return self.apply_schema(GtfsNames.CALENDAR, data)
 
     def load_shapes(self):
         data = mocks.GtfsSingleRowMock().shapes()
-        return data
+        return self.apply_schema(GtfsNames.SHAPES, data)
 
     def load_stops(self):
         data = mocks.GtfsSingleRowMock().stops()
-        return data
+        return self.apply_schema(GtfsNames.STOPS, data)
 
     def load_routes(self):
         data = mocks.GtfsSingleRowMock().routes()
-        return data
+        return self.apply_schema(GtfsNames.ROUTES, data)
 
     def load_stop_times(self):
         data = mocks.GtfsSingleRowMock().stop_times()
-        return data
+        return self.apply_schema(GtfsNames.STOP_TIMES, data)
 
     def load_trips(self):
         data = mocks.GtfsSingleRowMock().trips()
-        return data
+        return self.apply_schema(GtfsNames.TRIPS, data)
 
 
 

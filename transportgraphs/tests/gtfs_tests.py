@@ -131,12 +131,12 @@ class TestGtfsRoute(object):
     """ Tests basic functionality of models.Route objects """
 
     def test_construction(self):
-        provider = GtfsProviderSingleRowMock()
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderSingleRowMock(schema)
         routes = provider.load_routes()
         assert len(routes) == 1
 
         first_route = routes[0]
-        print first_route
         route = models.Route(first_route)
 
         assert route.is_valid()
@@ -147,11 +147,13 @@ class TestGtfsRoute(object):
         assert route.get_route_type() == first_route[u"route_type"]
         assert route == route
 
+
 class TestGtfsTripElement(object):
     """ Tests basic functionality of models.TripElement objects """
 
     def test_construction(self):
-        provider = GtfsProviderSingleRowMock()
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderSingleRowMock(schema)
         trip_elements = provider.load_trips()
         assert len(trip_elements) == 1
 
@@ -174,11 +176,13 @@ class TestGtfsTripElement(object):
         assert trip_element.get_trip_headsign() == first_element[u"trip_headsign"]
         assert trip_element.get_direction_id() == first_element[u"direction_id"]
 
+
 class TestGtfsStop(object):
     """ Tests basic functionality of models.Stop objects """
 
     def test_construction(self):
-        provider = GtfsProviderSingleRowMock()
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderSingleRowMock(schema)
         stops_elements = provider.load_stops()
         assert len(stops_elements) == 1
 
@@ -194,11 +198,13 @@ class TestGtfsStop(object):
         assert stop.get_stop_lat() == first_element[u"stop_lat"]
         assert stop.get_stop_lon() == first_element[u"stop_lon"]
 
+
 class TestGtfsStopTime(object):
     """ Tests basic functionality of models.StopTime objects """
 
     def test_construction(self):
-        provider = GtfsProviderSingleRowMock()
+        schema = GtfsCsvSchema()
+        provider = GtfsProviderSingleRowMock(schema)
         stop_times = provider.load_stop_times()
         assert len(stop_times) == 1
 
@@ -225,4 +231,9 @@ class TestGtfsStopTime(object):
         assert stop_time.get_drop_off_type() == first_element[u"drop_off_type"]
         assert stop_time.get_shape_dist_traveled() == first_element[u"shape_dist_traveled"]
 
+
+class TestModelBuilder(object):
+
+    schema = GtfsCsvSchema()
+    provider = GtfsProviderCsv(schema)
 
