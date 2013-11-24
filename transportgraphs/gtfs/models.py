@@ -4,7 +4,9 @@ gtfs.py:
 Data model for General Transit Feed Specification (GTFS) data.
 
 """
-class GtfsNames:
+class GtfsNames(object):
+    """ Enum-like class for referring to different
+        Gtfs objects """
     AGENCY = 0
     CALENDAR = 1
     CALENDAR_DATES = 2
@@ -103,7 +105,7 @@ class GtfsObject(object):
         """ Returns a unique key for this object.
             Should be defined in derived classes """
         raise NotImplementedError(
-            "unique id should be defined in derived class. Do not use this class directly! "
+            "unique id should be defined in derived class."
             )
 
     def __eq__(self, other):
@@ -361,7 +363,8 @@ class CalendarElement(GtfsObject):
 class CalendarDatesElement(GtfsObject):
     """ Represents an element in the calendar dates dataset """
     def __init__(self, data_dict):
-        super(CalendarDatesElement, self).__init__(CALENDAR_DATES_KEYS, data_dict)
+        super(CalendarDatesElement, self).__init__(
+            CALENDAR_DATES_KEYS, data_dict)
 
     def get_service_id(self):
         return self.get(u"service_id")

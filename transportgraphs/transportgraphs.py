@@ -1,6 +1,9 @@
+"""
+transportgraphs:
 
+Classes for working with sets of gtfs.models model objects.
+"""
 import gtfs.modelbuilder as builder
-import gtfs.models as models
 from gtfs.models import GtfsNames
 
 class GtfsKnowledgeBase(object):

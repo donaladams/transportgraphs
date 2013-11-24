@@ -1,10 +1,15 @@
-""" """
+"""
+gtfsprovider
+
+Contains classes for retrieving gtfs data from different sources.
+Each of these classes should derive from the abstract base
+class GtfsProvider.
+"""
 
 import os
 import utils.ucsv
 from utils.decorators import CheckPathIsValid
 from abc import ABCMeta, abstractmethod
-from gtfs.schema import GtfsSchema
 from gtfs.models import GtfsNames
 import gtfs.mocks as mocks
 
@@ -25,46 +30,74 @@ class GtfsProvider(object):
 
     @abstractmethod
     def load_agency(self):
+        """ Should retrieve a list of dictionaries
+            corresponding to rows in agency dataset.
+            Implemented in derived classes"""
         pass
 
     @abstractmethod
     def load_calendar_dates(self):
+        """ Should retrieve a list of dictionaries
+            corresponding to rows in calendar dates dataset.
+            Implemented in derived classes"""
         pass
 
     @abstractmethod
     def load_calendar(self):
+        """ Should retrieve a list of dictionaries
+            corresponding to rows in calendar dataset.
+            Implemented in derived classes"""
         pass
 
     @abstractmethod
     def load_shapes(self):
+        """ Should retrieve a list of dictionaries
+            corresponding to rows in shapes dataset.
+            Implemented in derived classes"""
         pass
 
     @abstractmethod
     def load_stops(self):
+        """ Should retrieve a list of dictionaries
+            corresponding to rows in stops dataset.
+            Implemented in derived classes"""
         pass
 
     @abstractmethod
     def load_routes(self):
+        """ Should retrieve a list of dictionaries
+            corresponding to rows in routes dataset.
+            Implemented in derived classes"""
         pass
 
     @abstractmethod
     def load_stop_times(self):
+        """ Should retrieve a list of dictionaries
+            corresponding to rows in stop times dataset.
+            Implemented in derived classes"""
         pass
 
     @abstractmethod
     def load_trips(self):
+        """ Should retrieve a list of dictionaries
+            corresponding to rows in trips dataset.
+            Implemented in derived classes"""
         pass
 
     def set_schema(self, schema):
+        """ Setter for schema allowing setter injection where
+            a schema is necessary """
         self.schema = schema
 
     def apply_schema(self, gtfs_name, data):
-        """ Processes data with schema. If schema not required, returns data as is.
-            Otherwise, RuntimeError is thrown. """
+        """ Processes data with schema. If schema not required,
+            returns data as is. Otherwise, RuntimeError is thrown. """
         if self.schema is not None:
             return self.schema.apply(gtfs_name, data)
         elif self.requires_schema:
-            raise RuntimeError("Must supply a schema when requires_schema set to True")
+            raise RuntimeError(
+                "Must supply a schema when requires_schema set to True"
+                )
         else:
             return data
 
@@ -85,8 +118,6 @@ def read_csv(path):
 class GtfsProviderCsv(GtfsProvider):
     """ Implementation of GtfsProvier that reads the data
         from Csvs"""
-
-    """ Standard names for GTFS files """
     AGENCY_FILE = "agency.txt"
     CALENDAR_DATES_FILE = "calendar_dates.txt"
     CALENDAR_FILE = "calendar.txt"
@@ -143,7 +174,7 @@ class GtfsProviderCsv(GtfsProvider):
     def load_gtfs_file(self, directory, filename):
         """ Loads a GTFS file into a list """
         try:
-            filepath = os.path.join(self.directory, filename)
+            filepath = os.path.join(directory, filename)
             return read_csv(filepath)
         except ValueError as value_error:
             print value_error

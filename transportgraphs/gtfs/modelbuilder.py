@@ -1,6 +1,14 @@
+"""
+modelbuilder:
+
+Contains class for providing instances of GtfsObject.
+"""
+
 import gtfs.models as models
 
 class GtfsModelBuilder(object):
+    """ Returns sets of GtfsObjects corresponding from
+        the dataset used by the injected GtfsProvider. """
 
     def __init__(self, provider, schema=None):
         self.provider = provider
